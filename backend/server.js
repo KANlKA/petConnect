@@ -5,6 +5,7 @@ import { ethers } from "ethers";
 import dotenv from "dotenv";
 import path from "path";
 import { fileURLToPath } from "url";
+import fs from "fs";
 
 // Fix: Define `__dirname` before using it
 const __filename = fileURLToPath(import.meta.url);
@@ -48,7 +49,9 @@ const provider = new ethers.JsonRpcProvider(BLOCKCHAIN_RPC_URL);
 const wallet = new ethers.Wallet(PRIVATE_KEY, provider);
 
 // Import the contract ABI
-import PetCareRewards from "./PetCareProject/artifacts/contracts/PetCareRewards.sol/PetCareRewards.json" assert { type: "json" };
+
+const rawData = fs.readFileSync("./PetCareProject/artifacts/contracts/PetCareRewards.sol/PetCareRewards.json");
+const PetCareRewards = JSON.parse(rawData);
 
 const contract = new ethers.Contract(CONTRACT_ADDRESS, PetCareRewards.abi, wallet);
 console.log("✅ Blockchain Connected");
